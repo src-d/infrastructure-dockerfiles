@@ -1,0 +1,12 @@
+sudo: required
+
+stages:
+  - name: publish
+    if: branch = master AND type = push
+
+jobs:
+  include:
+    - name: Publish new verisions
+      stage: publish
+      script:
+        - ./scripts/publish-new.sh

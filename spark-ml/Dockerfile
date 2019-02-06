@@ -1,6 +1,6 @@
 FROM srcd/spark:2.3.0
 
-# Based on core-ml, modified to be used on Debian Jessie
+# Based on core-ml, modified to be used on Debian Stretch
 
 ENV BROWSER=/browser \
     LC_ALL=en_US.UTF-8

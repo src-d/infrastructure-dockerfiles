@@ -3,9 +3,14 @@ DOCKER_REGISTRY = docker.io
 DOCKER_ORG = srcd
 VERSION := $(shell cat VERSION)
 DOCKER_IMAGE = $(DOCKER_REGISTRY)/$(DOCKER_ORG)/$(PROJECT):$(VERSION)
+DOCKER_USERNAME ?=
+DOCKER_PASSWORD ?=
 
 docker-build:
 	docker build -t $(DOCKER_IMAGE) .
 
 docker-push: docker-build
 	docker push $(DOCKER_IMAGE)
+
+docker-login:
+	@docker login -u "$(DOCKER_USERNAME)" -p "$(DOCKER_PASSWORD)" $(DOCKER_REGISTRY);

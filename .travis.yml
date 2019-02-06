@@ -6,7 +6,7 @@ stages:
 
 jobs:
   include:
-    - name: Publish new verisions
+    - name: Publish new versions
       stage: publish
       script:
         - ./scripts/publish-new.sh

@@ -1,4 +1,4 @@
-FROM srcd/spark:2.3.0
+FROM srcd/spark:2.2.3
 
 # Based on core-ml, modified to be used on Debian Stretch
 

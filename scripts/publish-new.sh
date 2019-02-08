@@ -10,6 +10,6 @@ while read -r line; do
     cd "$DIR" || continue
     echo "Building and pushing $DIR"
     make docker-login
-    #make docker-push
+    make docker-push
     cd $WORKDIR
 done <<< "$CHANGED_VERSIONS"

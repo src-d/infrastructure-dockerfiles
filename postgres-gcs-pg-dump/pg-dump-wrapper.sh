@@ -27,16 +27,26 @@ done
 [[ $count -gt 0 ]] && exit 1
 
 PORT=${PORT:-5432}
-DUMP_FILE="$TEMP_DIR/postgres-$DATABASE-dump-$(date +%Y%m%d%H%M%S).sqlc.gz"
+JOBS=${JOBS:-4}
+DUMP_DIR="$TEMP_DIR/postgres-$DATABASE-dump-$(date +%Y%m%d%H%M%S)"
+PGPASSFILE="$TEMP_DIR/.pgpass"
+
+trap "rm -rf $DUMP_DIR $PGPASSFILE" EXIT
 
 log "Creating postgres backup of $DATABASE"
-export PGPASSFILE="$TEMP_DIR/.pgpass"
 echo "$HOSTNAME:$PORT:$DATABASE:$USERNAME:$PASSWORD" > "$PGPASSFILE"
 chmod 600 "$PGPASSFILE"
-pg_dump --no-password --host="$HOSTNAME" --username="$USERNAME" --format=c --dbname="$DATABASE" | gzip > "$DUMP_FILE"
+pg_dump --no-password \
+        --jobs="$JOBS" \
+        --host="$HOSTNAME" \
+        --port="$PORT" \
+        --username="$USERNAME" \
+        --format=d \
+        --dbname="$DATABASE" \
+        --file="$DUMP_DIR"
 
-log "Authenticating"
+log "Authenticating in Goggle Cloud"
 gcloud auth activate-service-account --key-file "$GOOGLE_APPLICATION_CREDENTIALS"
 
 log "Copying snapshot into $GCS_BUCKET"
-gsutil cp "$DUMP_FILE" "gs://$GCS_BUCKET/$(basename $DUMP_FILE)"
+gsutil cp -r "$DUMP_DIR" "gs://$GCS_BUCKET/$(basename $DUMP_DIR)"

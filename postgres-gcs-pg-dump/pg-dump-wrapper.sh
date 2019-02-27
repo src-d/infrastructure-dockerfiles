@@ -36,6 +36,7 @@ trap "rm -rf $DUMP_DIR $PGPASSFILE" EXIT
 log "Creating postgres backup of $DATABASE"
 echo "$HOSTNAME:$PORT:$DATABASE:$USERNAME:$PASSWORD" > "$PGPASSFILE"
 chmod 600 "$PGPASSFILE"
+export PGPASSFILE
 pg_dump --no-password \
         --jobs="$JOBS" \
         --host="$HOSTNAME" \

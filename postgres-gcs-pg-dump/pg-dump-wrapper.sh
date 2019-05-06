@@ -50,4 +50,6 @@ log "Authenticating in Goggle Cloud"
 gcloud auth activate-service-account --key-file "$GOOGLE_APPLICATION_CREDENTIALS"
 
 log "Copying snapshot into $GCS_BUCKET"
-gsutil cp -r "$DUMP_DIR" "gs://$GCS_BUCKET/$(basename $DUMP_DIR)"
+gsutil -m cp -r "$DUMP_DIR" "gs://$GCS_BUCKET/$(basename $DUMP_DIR)"
+
+log "This is the end"

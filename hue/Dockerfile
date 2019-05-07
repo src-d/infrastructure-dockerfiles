@@ -2,12 +2,10 @@ FROM ubuntu:bionic
 
 ARG HUE_VERSION=4.3.0
 
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+
 RUN apt-get update && \
     apt-get install -y software-properties-common && \
-    add-apt-repository -y ppa:webupd8team/java && \
-    apt-get update && \
-    apt-get install -y oracle-java8-installer && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -40,9 +38,13 @@ RUN apt-get update && \
 
 RUN git clone https://github.com/cloudera/hue.git -b release-${HUE_VERSION}
 WORKDIR hue
-
+RUN sed -i.bak 's/10.0/12.0/g' maven/pom.xml 
 RUN make apps
-RUN pip install psycopg2
+RUN pip install psycopg2-binary
+
+COPY ./gitbase-fix.patch .
+RUN patch ./desktop/core/ext-py/MySQL-python-1.2.5/MySQLdb/connections.py gitbase-fix.patch
+RUN patch /hue/build/env/local/lib/python2.7/site-packages/MySQL_python-1.2.5-py2.7-linux-x86_64.egg/MySQLdb/connections.py gitbase-fix.patch
 
 EXPOSE 8888
 VOLUME /hue/desktop/

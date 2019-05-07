@@ -1,0 +1,15 @@
+--- connections.py.orig	2019-04-23 12:18:34.172482000 +0000
++++ connections.py	2019-04-23 12:20:14.655698000 +0000
+@@ -242,6 +242,12 @@
+         if self.get_autocommit() != on:
+             _mysql.connection.autocommit(self, on)
+ 
++    def commit(self):
++        try:
++            super(Connection, self).commit()
++        except OperationalError:
++            pass
++
+     def cursor(self, cursorclass=None):
+         """
+ 

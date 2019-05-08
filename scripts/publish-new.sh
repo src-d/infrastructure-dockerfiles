@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 CHANGED_VERSIONS=$(git diff --name-only $TRAVIS_COMMIT_RANGE | grep 'VERSION$')
 WORKDIR=$(pwd)
 while read -r line; do

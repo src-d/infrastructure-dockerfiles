@@ -2,9 +2,15 @@
 
 set -e
 
-CHANGED_VERSIONS=$(git diff --name-only $TRAVIS_COMMIT_RANGE | grep 'VERSION$')
+CHANGED_FILES=$(mktemp)
+trap "rm -f $CHANGED_FILES" EXIT
+
+git diff --name-only "$TRAVIS_COMMIT_RANGE" > "$CHANGED_FILES"
+
+grep 'VERSION$' "$CHANGED_FILES" || { echo "No VERSION files changed. Exiting."; exit 0; }
+
 WORKDIR=$(pwd)
-while read -r line; do
+grep 'VERSION$' "$CHANGED_FILES" | while read line; do
     if [[ "$line" == "" ]]; then
         continue
     fi
@@ -14,4 +20,4 @@ while read -r line; do
     make docker-login
     make docker-push
     cd $WORKDIR
-done <<< "$CHANGED_VERSIONS"
+done

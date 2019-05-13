@@ -1,7 +1,7 @@
 FROM openjdk:8-jdk-stretch
 
 ENV HADOOP_VERSION=2.7.3 \
-    SPARK_VERSION=2.2.3 \
+    SPARK_VERSION=2.3.3 \
     SPARK_HOME=/opt/spark \
     PATH=$PATH:$SPARK_HOME/bin \
     PYTHONPATH=$SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j-0.10.4-src.zip \

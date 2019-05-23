@@ -50,10 +50,13 @@ const api = new GhostContentAPI({
     console.log("Fetching images")
     for (let post of posts) {
         await downloadImage(post.feature_image.substr(process.env.GHOST_ENDPOINT.length));
-        for (let card of JSON.parse(post.mobiledoc).cards) {
-            if (card[0] == 'image') {
-                await downloadImage(card[1].src);
+        if (post.mobiledoc) {
+            for (let card of JSON.parse(post.mobiledoc).cards) {
+                if (card[0] == 'image') {
+                    await downloadImage(card[1].src);
+                }
             }
         }
     }
+    console.log("Backup finished")
 })();

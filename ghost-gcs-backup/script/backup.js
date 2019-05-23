@@ -42,7 +42,7 @@ const api = new GhostContentAPI({
     key: process.env.GHOST_API_KEY,
 });
 
-const run = async () => {
+(async () => {
     console.log("Fetching posts")
     const posts = await api.posts.browse({'limit': 1000});
     await storage.bucket(process.env.GCS_BUCKET).file(`ghost_${yyyy}_${mm}_${dd}.json`).save(JSON.stringify(posts))
@@ -56,5 +56,4 @@ const run = async () => {
             }
         }
     }
-}
-run();
+})();

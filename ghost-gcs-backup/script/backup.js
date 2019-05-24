@@ -27,6 +27,8 @@ const dd = String(today.getDate()).padStart(2, '0');
 const mm = String(today.getMonth() + 1).padStart(2, '0');
 const yyyy = today.getFullYear();
 
+const postLimit = process.env.GHOST_POST_LIMIT ? parseInt(process.env.GHOST_POST_LIMIT, 10) : 1000;
+
 const downloadImage = (src) => new Promise(async (resolve, reject) => {
     const file = await storage.bucket(process.env.GCS_BUCKET).file(`ghost_${yyyy}_${mm}_${dd}` + src).createWriteStream()
     https.get(process.env.GHOST_ENDPOINT + src, function(response) {
@@ -44,7 +46,7 @@ const api = new GhostContentAPI({
 
 (async () => {
     console.log("Fetching posts")
-    const posts = await api.posts.browse({'limit': 1000});
+    const posts = await api.posts.browse({'limit': postLimit});
     await storage.bucket(process.env.GCS_BUCKET).file(`ghost_${yyyy}_${mm}_${dd}.json`).save(JSON.stringify(posts))
 
     console.log("Fetching images")

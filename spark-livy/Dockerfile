@@ -1,4 +1,4 @@
-FROM srcd/spark-ml:2.2.3
+FROM srcd/spark-ml:2.3.3
 
 
 ENV LIVY_VERSION=0.5.0-incubating \

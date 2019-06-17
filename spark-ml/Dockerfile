@@ -135,4 +135,4 @@ RUN pip3 install spacy gensim wmd datasketch fasttext && python3 -m spacy downlo
 # Generic ML
 RUN pip3 install xgboost lightgbm catboost scikit-learn hdbscan umap-learn
 # *Frequent updates zone*
-RUN pip3 install asdf ipython tensorflow-gpu tensorflow-hub keras torch
+RUN pip3 install asdf ipython tensorflow-gpu tensorflow-hub keras torch bblfsh

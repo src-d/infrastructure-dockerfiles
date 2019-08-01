@@ -38,7 +38,7 @@ RUN echo "deb https://apt.repos.intel.com/mkl all main" > /etc/apt/sources.list.
 ADD etc/numpy-site.cfg /root/.numpy-site.cfg
 RUN apt-get update && \
     apt-get install -y --no-install-suggests --no-install-recommends \
-      libfftw3-3 libfftw3-dev gfortran && \
+      libfftw3-3 libfftw3-dev gfortran libgfortran4 && \
     export NPY_NUM_BUILD_JOBS=$(getconf _NPROCESSORS_ONLN) && \
     echo $NPY_NUM_BUILD_JOBS && \
     pip3 -v install --no-cache-dir numpy scipy\>=1.2.0rc1 --no-binary numpy --no-binary scipy && \

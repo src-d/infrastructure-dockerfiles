@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: update-jupyter-image
+spec:
+  selector:
+    matchLabels:
+      name: update-jupyter-image
+  template:
+    metadata:
+      labels:
+        name: update-jupyter-image
+    spec:
+      containers:
+      - name: notebook
+        image: srcd/ml-infra-jh-cuda-python:latest
+        imagePullPolicy: Always

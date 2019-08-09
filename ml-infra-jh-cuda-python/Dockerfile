@@ -7,20 +7,24 @@ COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN ln -s /root /home/root && \
     mkdir -p /usr/local/etc/jupyter/nbconfig && \
-    pip3 install --no-cache-dir nbgitpuller jupyterhub==0.9.4 jupyter_contrib_nbextensions jupyter_nbextensions_configurator && \
+    pip3 install --no-cache-dir nbgitpuller jupyterhub==0.9.4 jupyter_contrib_nbextensions jupyter_nbextensions_configurator ipywidgets && \
     jupyter contrib nbextension install && \
     jupyter nbextensions_configurator enable && \
     echo '{\
   "load_extensions": {\
     "nbextensions_configurator/config_menu/main": true,\
     "execute_time/ExecuteTime": true,\
-    "notify/notify": true\
+    "notify/notify": true,\
+    "jupyter-js-widgets/extension": true\
   },\
   "ExecuteTime": {\
     "display_in_utc": true\
   }\
 }' > /usr/local/etc/jupyter/nbconfig/notebook.json && \
-    jupyter serverextension enable --py nbgitpuller --sys-prefix
+    jupyter serverextension enable --py nbgitpuller --sys-prefix && \
+    sed -i 's/self.notary.mark_cells(nb, trusted)/self.notary.mark_cells(nb, True)/' /usr/local/lib/python3.6/dist-packages/notebook/services/contents/manager.py
+
+# We forcefully mark all the notebooks as trusted
 
 EXPOSE 8888
 ENV NB_USER root

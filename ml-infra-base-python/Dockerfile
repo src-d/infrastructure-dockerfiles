@@ -116,4 +116,4 @@ RUN pip3 install --no-cache-dir xgboost lightgbm catboost scikit-learn hdbscan u
     rm -rf /root/.cache/pip
 
 # *Frequent updates zone*
-RUN pip3 install --no-cache-dir 'protobuf<3.8.0' asdf ipython tf-nightly-gpu-2.0-preview tensorflow-hub tensorflow-addons
+RUN pip3 install --no-cache-dir 'protobuf<3.8.0' asdf ipython

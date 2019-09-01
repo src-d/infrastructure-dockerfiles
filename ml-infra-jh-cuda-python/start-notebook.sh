@@ -4,6 +4,8 @@
 
 set -e
 
+echo "HISTFILE=/user/${JUPYTERHUB_USER}/.bash_history"
+
 if [[ ! -z "${JUPYTERHUB_API_TOKEN}" ]]; then
   # launched by JupyterHub, use single-user entrypoint
   exec /usr/local/bin/start-singleuser.sh "$@"

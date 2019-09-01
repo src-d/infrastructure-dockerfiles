@@ -60,13 +60,26 @@ RUN apt-get update && \
 # common Ubuntu packages
 # build-essential requires dpkg-dev, which we do not need
 RUN apt-get update && \
+    apt-get -y upgrade && \
     apt-get install -y --no-install-suggests --no-install-recommends nano curl cpio lzop pxz gdb \
-      less tmux libpython3-dbg net-tools libc6-dev make pkg-config graphviz git vim unzip \
+      less tmux libpython3-dbg net-tools libc6-dev make pkg-config graphviz git vim unzip psmisc \
       bzip2 xz-utils patch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/* /usr/share/doc-base/* /usr/share/X11 /usr/share/icons \
-      /usr/share/applications /usr/share/info/*
+    /usr/share/applications /usr/share/info/* && \
+    echo 'bind ^P gotoline main' > /root/.nanorc && \
+    sed -i 's/HISTSIZE=1000/HISTSIZE=-1/' /root/.bashrc && \
+    sed -i 's/HISTFILESIZE=2000/HISTFILESIZE=-1/' /root/.bashrc && \
+    echo "PROMPT_COMMAND='history -a;history -n'" >> /root/.bashrc && \
+    echo "source /usr/share/bash-completion/completions/fzf" >> /root/.bashrc && \
+    echo "source /usr/share/bash-completion/key-bindings.bash" >> /root/.bashrc && \
+    wget http://mirrors.kernel.org/ubuntu/pool/universe/f/fzf/fzf_0.18.0-2_amd64.deb && \
+    dpkg -i fzf_0.18.0-2_amd64.deb && \
+    dpkg-deb -x fzf_0.18.0-2_amd64.deb /tmp/fzf && \
+    mv /tmp/fzf/usr/share/doc/fzf/examples/key-bindings.bash /usr/share/bash-completion/key-bindings.bash && \
+    rm -rf /tmp/fzf && \
+    rm fzf_0.18.0-2_amd64.deb
 
 # system packages - expected to change rarely
 RUN apt-get update && \
@@ -75,7 +88,10 @@ RUN apt-get update && \
       cachetools configargparse parquet pydot flask sqlalchemy sqlalchemy-utils pymongo flake8 && \
     apt-get remove -y libsnappy-dev && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    wget https://github.com/gdrive-org/gdrive/releases/download/2.1.0/gdrive-linux-x64 -O gdrive && \
+    chmod +x gdrive && \
+    mv gdrive /usr/local/bin
 
 # plotting
 RUN apt-get update && \
@@ -104,7 +120,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# the rest of the layers can change frquently
+# the rest of the layers may change frequently
 
 # NLP
 RUN pip3 install --no-cache-dir spacy gensim wmd datasketch fasttext && \

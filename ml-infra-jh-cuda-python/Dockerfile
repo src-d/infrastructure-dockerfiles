@@ -1,8 +1,5 @@
 FROM srcd/ml-infra-cuda-python
 
-COPY start.sh /usr/local/bin
-COPY start-notebook.sh /usr/local/bin
-COPY start-singleuser.sh /usr/local/bin
 COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN ln -s /root /home/root && \
@@ -40,7 +37,9 @@ setTimeout(focus, 100);' $mainjs && \
 });' >>$mainjs && \
     sed -i '/shell_command=shell,/a\ \ \ \ \ \ \ \ term_settings={"cwd": "/user/" + os.getenv("JUPYTERHUB_USER"), "type": "xterm-color"},' /usr/local/lib/python3.*/dist-packages/notebook/terminal/__init__.py
 
-# We forcefully mark all the notebooks as trusted
+COPY start.sh /usr/local/bin
+COPY start-notebook.sh /usr/local/bin
+COPY start-singleuser.sh /usr/local/bin
 
 EXPOSE 8888
 ENV NB_USER root

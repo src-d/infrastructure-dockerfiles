@@ -9,6 +9,8 @@ fi
 
 set -e
 
+echo "HISTFILE=/user/$JUPYTERHUB_USER/.bash_history" >>/root/.bashrc
+
 # Exec the specified command or fall back on bash
 if [ $# -eq 0 ]; then
     cmd=( "bash" )

@@ -4,7 +4,7 @@ COPY jupyter_notebook_config.py /etc/jupyter/jupyter_notebook_config.py
 
 RUN ln -s /root /home/root && \
     mkdir -p /usr/local/etc/jupyter/nbconfig && \
-    pip3 install --no-cache-dir nbgitpuller jupyterhub==0.9.4 jupyter_contrib_nbextensions jupyter_nbextensions_configurator ipywidgets && \
+    pip3 install --no-cache-dir nbgitpuller jupyterhub==0.9.4 jupyter_contrib_nbextensions jupyter_nbextensions_configurator ipywidgets neptune-notebooks && \
     jupyter contrib nbextension install && \
     jupyter nbextensions_configurator enable && \
     echo '{\
@@ -12,7 +12,8 @@ RUN ln -s /root /home/root && \
     "nbextensions_configurator/config_menu/main": true,\
     "execute_time/ExecuteTime": true,\
     "notify/notify": true,\
-    "jupyter-js-widgets/extension": true\
+    "jupyter-js-widgets/extension": true,\
+    "neptune-notebooks/neptune-notebook": true\
   },\
   "ExecuteTime": {\
     "display_in_utc": true\

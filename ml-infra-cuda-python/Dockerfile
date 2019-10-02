@@ -24,7 +24,6 @@ RUN apt-get update && \
 
 # cuda layer
 RUN apt-get update && \
-    apt-get install -y gnupg && \
     wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu${CUDA_UBUNTU}/x86_64/cuda-repo-ubuntu${CUDA_UBUNTU}_${CUDA_VERSION}-1_amd64.deb && \
     dpkg -i cuda-repo-ubuntu${CUDA_UBUNTU}_${CUDA_VERSION}-1_amd64.deb && \
     rm cuda-repo-ubuntu${CUDA_UBUNTU}_${CUDA_VERSION}-1_amd64.deb && \
@@ -38,8 +37,6 @@ RUN apt-get update && \
         cuda-cusolver-${CUDA_VERSION_DASH} \
         cuda-cusparse-${CUDA_VERSION_DASH} && \
     sed -i 's#"$#:/usr/local/cuda-${CUDA_VERSION_MAJOR}/bin"#' /etc/environment && \
-    apt-get remove -y gnupg && \
-    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/*

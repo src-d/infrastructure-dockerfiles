@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
 
+ARG VERBOSE=
 ENV BROWSER=/browser \
     LC_ALL=en_US.UTF-8
 
@@ -45,7 +46,7 @@ RUN apt-get update && \
       libfftw3-3 libfftw3-dev gfortran libgfortran4 && \
     export NPY_NUM_BUILD_JOBS=$(getconf _NPROCESSORS_ONLN) && \
     echo $NPY_NUM_BUILD_JOBS && \
-    pip3 -v install --no-cache-dir numpy scipy\>=1.2.0rc1 --no-binary numpy --no-binary scipy && \
+    pip3 $VERBOSE install --no-cache-dir numpy scipy\>=1.2.0rc1 --no-binary numpy --no-binary scipy && \
     apt-get remove -y libfftw3-dev gfortran && \
     apt-get autoremove -y && \
     apt-get clean && \

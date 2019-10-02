@@ -1,5 +1,6 @@
 FROM ubuntu:18.04
 
+ARG VERBOSE=
 ENV BROWSER=/browser \
     LC_ALL=en_US.UTF-8
 
@@ -21,10 +22,14 @@ echo "  $@"\n\
 echo\n\' > /browser && \
     chmod +x /browser
 
+ADD GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB
+
 # Intel MKL
 RUN echo "deb https://apt.repos.intel.com/mkl all main" > /etc/apt/sources.list.d/intel-mkl.list && \
     wget -O - https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB | \
     apt-key add - && \
+    apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB && \
+    rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB && \ 
     apt-get update && \
     apt-get install -y --no-install-suggests --no-install-recommends intel-mkl-gnu-c-2019.1-144 && \
     rm -rf /opt/intel/documentation_2019 && \
@@ -41,7 +46,7 @@ RUN apt-get update && \
       libfftw3-3 libfftw3-dev gfortran libgfortran4 && \
     export NPY_NUM_BUILD_JOBS=$(getconf _NPROCESSORS_ONLN) && \
     echo $NPY_NUM_BUILD_JOBS && \
-    pip3 -v install --no-cache-dir numpy scipy\>=1.2.0rc1 --no-binary numpy --no-binary scipy && \
+    pip3 $VERBOSE install --no-cache-dir numpy scipy\>=1.2.0rc1 --no-binary numpy --no-binary scipy && \
     apt-get remove -y libfftw3-dev gfortran && \
     apt-get autoremove -y && \
     apt-get clean && \
@@ -63,12 +68,13 @@ RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y --no-install-suggests --no-install-recommends nano curl cpio lzop pxz gdb \
       less tmux libpython3-dbg net-tools libc6-dev make pkg-config graphviz git vim unzip psmisc \
-      bzip2 xz-utils patch && \
+      bzip2 xz-utils patch sysfsutils && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/* /usr/share/doc-base/* /usr/share/X11 /usr/share/icons \
     /usr/share/applications /usr/share/info/* && \
     echo 'bind ^P gotoline main' > /root/.nanorc && \
+    echo 'bind ^E whereis main' >> /root/.nanorc && \
     sed -i 's/HISTSIZE=1000/HISTSIZE=-1/' /root/.bashrc && \
     sed -i 's/HISTFILESIZE=2000/HISTFILESIZE=-1/' /root/.bashrc && \
     echo "PROMPT_COMMAND='history -a;history -n'" >> /root/.bashrc && \

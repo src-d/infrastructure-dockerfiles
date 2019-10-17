@@ -2,8 +2,8 @@ FROM srcd/ml-infra-jh-cuda-python
 
 RUN apt-get update && \
     apt-get install -y --no-install-suggests --no-install-recommends cuda-cudart-dev-10-0 cuda-nvcc-10-0 cuda-cusparse-dev-10-0 && \
-    pip3 install --no-cache-dir https://download.pytorch.org/whl/cu100/torch-1.1.0-cp36-cp36m-linux_x86_64.whl && \
-    pip3 install --no-cache-dir https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp36-cp36m-linux_x86_64.whl && \
+    pip3 install --no-cache-dir 'https://download.pytorch.org/whl/cu100/torch-1.3.0%2Bcu100-cp36-cp36m-linux_x86_64.whl' && \
+    pip3 install --no-cache-dir 'https://download.pytorch.org/whl/cu100/torchvision-0.4.1%2Bcu100-cp36-cp36m-linux_x86_64.whl' && \
     pip3 install --verbose --no-cache-dir --no-binary torch-scatter torch-scatter && \
     pip3 install --verbose --no-cache-dir --no-binary torch-sparse torch-sparse && \
     pip3 install --verbose --no-cache-dir --no-binary torch-cluster torch-cluster && \

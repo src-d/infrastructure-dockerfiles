@@ -68,7 +68,7 @@ RUN apt-get update && \
     apt-get -y upgrade && \
     apt-get install -y --no-install-suggests --no-install-recommends nano curl cpio lzop pxz gdb \
       less tmux libpython3-dbg net-tools libc6-dev make pkg-config graphviz git vim unzip psmisc \
-      bzip2 xz-utils patch sysfsutils && \
+      bzip2 xz-utils patch sysfsutils iputils-ping file dnsutils telnet && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/* /usr/share/doc-base/* /usr/share/X11 /usr/share/icons \

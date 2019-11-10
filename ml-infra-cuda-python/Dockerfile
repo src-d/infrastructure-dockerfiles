@@ -30,6 +30,8 @@ RUN apt-get update && \
     wget --retry-connrefused -O - https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${CUDA_UBUNTU}/x86_64/7fa2af80.pub | apt-key add - && \
     apt-get update && \
     apt-get -y install --no-install-suggests --no-install-recommends \
+        cuda-compiler-${CUDA_VERSION_DASH} \
+        cuda-cupti-${CUDA_VERSION_DASH} \
         cuda-cublas-${CUDA_VERSION_DASH} \
         cuda-cudart-${CUDA_VERSION_DASH} \
         cuda-cufft-${CUDA_VERSION_DASH} \
@@ -39,7 +41,10 @@ RUN apt-get update && \
     sed -i 's#"$#:/usr/local/cuda-${CUDA_VERSION_MAJOR}/bin"#' /etc/environment && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -rf /usr/share/doc/*
+    rm -rf /usr/share/doc/* && \
+    echo "/usr/local/cuda-${CUDA_VERSION_DASH}/extras/CUPTI/lib64" > /etc/ld.so.conf.d/cupti.conf && \
+    ldconfig
+
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/cuda-${CUDA_VERSION_MAJOR}/bin
 
 # cudnn layer

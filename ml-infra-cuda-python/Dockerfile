@@ -42,7 +42,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /usr/share/doc/* && \
-    echo "/usr/local/cuda-${CUDA_VERSION_DASH}/extras/CUPTI/lib64" > /etc/ld.so.conf.d/cupti.conf && \
+    echo "/usr/local/cuda-${CUDA_VERSION_MAJOR}/extras/CUPTI/lib64" > /etc/ld.so.conf.d/cupti.conf && \
     ldconfig
 
 ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/cuda-${CUDA_VERSION_MAJOR}/bin

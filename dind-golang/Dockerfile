@@ -11,9 +11,11 @@ RUN apk add --no-cache \
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		bash \
-		gcc \
 		musl-dev \
 		openssl \
+		git \
+# https://wiki.alpinelinux.org/wiki/GCC
+		build-base \
 		go \
 	; \
 	export \

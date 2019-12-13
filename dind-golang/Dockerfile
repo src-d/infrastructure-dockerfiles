@@ -1,5 +1,5 @@
 FROM docker:18.09.7-dind
-ENV GOLANG_VERSION 1.12.7
+ENV GOLANG_VERSION 1.13.3
 
 #
 # Install Golang 
@@ -28,7 +28,7 @@ RUN set -eux; \
 	; \
 	\
 	wget -O go.tgz "https://golang.org/dl/go$GOLANG_VERSION.src.tar.gz"; \
-	echo '95e8447d6f04b8d6a62de1726defbb20ab203208ee167ed15f83d7978ce43b13 *go.tgz' | sha256sum -c -; \
+	echo '4f7123044375d5c404280737fbd2d0b17064b66182a65919ffe20ffe8620e3df *go.tgz' | sha256sum -c -; \
 	tar -C /usr/local -xzf go.tgz; \
 	rm go.tgz; \
 	\
